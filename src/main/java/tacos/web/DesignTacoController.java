@@ -14,6 +14,7 @@ import tacos.data.IngredientRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller
 @RequestMapping("/design")
@@ -61,10 +62,8 @@ public class DesignTacoController {
         return "redirect:/orders/current";
     }
 
-    private Iterable<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
-        return ingredients
-                .stream()
-                .filter(x -> x.getType().equals(type))
+    private Iterable<Ingredient> filterByType(Iterable<Ingredient> ingredients, Type type) {
+        return StreamSupport.stream(ingredients.spliterator(), false)  // ← нужен StreamSupport
+                .filter(i -> i.getType().equals(type))
                 .collect(Collectors.toList());
-    }
-}
+}}
